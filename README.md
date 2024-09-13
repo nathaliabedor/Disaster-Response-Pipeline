@@ -1,4 +1,3 @@
-
 # Disaster Response Pipeline Project
 
 ## Summary
@@ -36,9 +35,20 @@ The pipeline:
 ## How to Run
 
 ### 1. Running the ETL Pipeline
-To process the data and store it in a SQLite database:
 
 ```bash
-python data/process_data.py data/messages.csv data/categories.csv data/DisasterResponse.db
+cd data
+python process_data.py messages.csv categories.csv DisasterResponse.db
 
- 
+cd models
+python train_classifier.py ../data/DisasterResponse.db classifier.pkl
+
+cd app
+python run.py
+
+pip install -r requirements.txt
+
+
+
+
+
