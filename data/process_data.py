@@ -30,7 +30,7 @@ def load_data(messages_filepath, categories_filepath):
 def clean_data(df):
     """
     Cleans the dataframe by transforming the category columns into separate columns
-    and converting values to numeric.
+    and converting values to binary (0 or 1). Drops rows where 'related' equals 2.
 
     Parameters:
     -----------
@@ -50,11 +50,15 @@ def clean_data(df):
     category_colnames = row.apply(lambda x: x[:-2])
     categories.columns = category_colnames
 
-    # Convert category values to numeric (0 or 1)
+    # Convert category values to just numbers 0 or 1
     for column in categories:
-        categories[column] = categories[column].str[-1].astype(int)
-    
-    # Drop the original categories column and concatenate with the original dataframe
+        categories[column] = categories[column].str[-1]  # Take the last character
+        categories[column] = categories[column].astype(int)  # Convert to integer
+
+    # Drop rows where 'related' equals 2
+    categories = categories[categories['related'] != 2]
+
+    # Drop the original 'categories' column and concatenate the new 'categories' dataframe
     df = df.drop('categories', axis=1)
     df = pd.concat([df, categories], axis=1)
 
@@ -62,6 +66,7 @@ def clean_data(df):
     df = df.drop_duplicates()
     
     return df
+
 
 def save_data(df, database_filename):
     """
