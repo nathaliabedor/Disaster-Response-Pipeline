@@ -38,7 +38,7 @@ def load_data(database_filepath):
     """
     # Create engine to connect to the database
 
-    engine = create_engine(f'sqlite:///absolute/path/to/{database_filepath}')
+    engine = create_engine(f'sqlite:///{database_filepath}')
     
     # Load the data from the table
     df = pd.read_sql_table('DisasterResponse', engine)
